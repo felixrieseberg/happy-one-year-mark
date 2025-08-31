@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BuddyListTree from './BuddyListTree';
 import './BuddyList.css';
 
 const BuddyList: React.FC = () => {
@@ -33,13 +34,35 @@ const BuddyList: React.FC = () => {
       <div className="window" role="tabpanel" style={{ flex: 1 }}>
         <div className="window-body">
           {activeTab === 'online' ? (
-            <div className="buddy-list-container">
-              {/* Buddy list content will go here */}
-              <div>
-                <strong>Buddies (0/7)</strong>
-                <br />
-                <em style={{ color: '#666' }}>No buddies online</em>
-              </div>
+            <div className="sunken-panel" style={{ height: '100%', margin: '8px' }}>
+              <BuddyListTree
+                groups={[
+                  {
+                    id: 'buddies',
+                    name: 'Buddies',
+                    buddies: []
+                  },
+                  {
+                    id: 'family',
+                    name: 'Family',
+                    buddies: []
+                  },
+                  {
+                    id: 'coworkers',
+                    name: 'Co-Workers',
+                    buddies: []
+                  },
+                  {
+                    id: 'offline',
+                    name: 'Offline',
+                    buddies: []
+                  }
+                ]}
+                onBuddyDoubleClick={(buddy) => {
+                  console.log('Double clicked buddy:', buddy);
+                  // This is where you would open a chat window
+                }}
+              />
             </div>
           ) : (
             <div>

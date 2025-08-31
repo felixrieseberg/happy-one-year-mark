@@ -1,0 +1,95 @@
+.buddy-list-tree {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.buddy-groups {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2px;
+}
+
+/* Group styling */
+.buddy-group {
+  margin-bottom: 2px;
+}
+
+.buddy-group-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 2px 4px;
+  user-select: none;
+}
+
+.buddy-group-header:hover {
+  background-color: #e0e0e0;
+}
+
+/* Arrow styling */
+.arrow {
+  display: inline-block;
+  font-size: 10px;
+  margin-right: 4px;
+  transition: transform 0.1s;
+  font-family: monospace;
+}
+
+.arrow.expanded {
+  transform: rotate(90deg);
+}
+
+.group-name {
+  font-weight: bold;
+  font-size: 11px;
+}
+
+/* Buddy item styling */
+.buddy-group-content {
+  margin-left: 16px;
+}
+
+.buddy-item {
+  padding: 2px 4px;
+  cursor: pointer;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.buddy-item:hover {
+  background-color: #000080;
+  color: white;
+}
+
+.buddy-item.empty {
+  cursor: default;
+  color: #666;
+  font-style: italic;
+}
+
+.buddy-item.empty:hover {
+  background-color: transparent;
+  color: #666;
+}
+
+.buddy-name {
+  font-weight: normal;
+}
+
+.buddy-status {
+  color: #666;
+  font-style: italic;
+  font-size: 10px;
+}
+
+.buddy-item:hover .buddy-status {
+  color: #c0c0c0;
+}
+
+.no-buddies {
+  padding: 8px;
+  text-align: center;
+}

@@ -43,9 +43,9 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
+    "98.css": "^0.1.21",
     "electron-squirrel-startup": "^1.0.1",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-windows-xp": "^0.7.1"
+    "react-dom": "^19.1.1"
   }
 }

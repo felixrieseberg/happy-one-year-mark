@@ -1,6 +1,7 @@
 import React from 'react';
-import { Window, Button } from 'react-windows-xp';
+import Window98 from './Window98';
 import './App.css';
+import "98.css";
 
 const App: React.FC = () => {
   const handleClose = () => {
@@ -21,39 +22,36 @@ const App: React.FC = () => {
       height: '100vh', 
       margin: 0, 
       padding: 0,
-      overflow: 'hidden'
+      overflow: 'hidden',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#008080'
     }}>
-      <Window
+      <Window98
         title="Happy One Year Mark! 🎉"
-        showClose={true}
-        showMinimize={true}
-        showMaximize={true}
         onClose={handleClose}
         onMinimize={handleMinimize}
         onMaximize={handleMaximize}
-        style={{
-          width: '100%',
-          height: 'calc(100% - 3px)',
-          position: 'absolute',
-          top: 0,
-          left: 0
-        }}
+        width="100%"
+        height="calc(100% - 4px)"
       >
-        <div style={{ 
-          padding: '20px',
-          backgroundColor: '#ECE9D8',
-          height: '100%',
-          boxSizing: 'border-box'
-        }}>
-          <h1 style={{ marginTop: 0 }}>Welcome to Windows XP!</h1>
-          <p>This Electron app now looks like a classic Windows XP window.</p>
+        <div style={{ padding: '16px' }}>
+          <h2>Welcome to Windows 98!</h2>
+          <p>This Electron app now has that classic Windows 98 look.</p>
           <p>Happy one year, Mark! 🎉</p>
           
           <div style={{ marginTop: '20px' }}>
-            <Button>Click me!</Button>
+            <button>Click me!</button>
+            <button style={{ marginLeft: '8px' }}>Another button</button>
+          </div>
+          
+          <div className="field-row" style={{ marginTop: '20px' }}>
+            <label htmlFor="text-input">Name:</label>
+            <input id="text-input" type="text" />
           </div>
         </div>
-      </Window>
+      </Window98>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import Window98 from './Window98';
+import BuddyList from './BuddyList';
 import './App.css';
 import "98.css";
 
@@ -22,35 +23,17 @@ const App: React.FC = () => {
       height: '100vh', 
       margin: 0, 
       padding: 0,
-      overflow: 'hidden',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#008080'
+      overflow: 'hidden'
     }}>
       <Window98
-        title="Happy One Year Mark! 🎉"
+        title="Buddy List"
         onClose={handleClose}
         onMinimize={handleMinimize}
         onMaximize={handleMaximize}
         width="100%"
-        height="calc(100% - 4px)"
+        height="100%"
       >
-        <div style={{ padding: '16px' }}>
-          <h2>Welcome to Windows 98!</h2>
-          <p>This Electron app now has that classic Windows 98 look.</p>
-          <p>Happy one year, Mark! 🎉</p>
-          
-          <div style={{ marginTop: '20px' }}>
-            <button>Click me!</button>
-            <button style={{ marginLeft: '8px' }}>Another button</button>
-          </div>
-          
-          <div className="field-row" style={{ marginTop: '20px' }}>
-            <label htmlFor="text-input">Name:</label>
-            <input id="text-input" type="text" />
-          </div>
-        </div>
+        <BuddyList />
       </Window98>
     </div>
   );

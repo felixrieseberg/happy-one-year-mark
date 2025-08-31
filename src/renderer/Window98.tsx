@@ -26,7 +26,13 @@ const Window98: React.FC<Window98Props> = ({
   height = '100%'
 }) => {
   return (
-    <div className="window" style={{ width, height }}>
+    <div className="window" style={{ 
+      width, 
+      height,
+      display: 'flex',
+      flexDirection: 'column',
+      boxSizing: 'border-box'
+    }}>
       <div className="title-bar">
         <div className="title-bar-text">{title}</div>
         <div className="title-bar-controls">
@@ -41,7 +47,11 @@ const Window98: React.FC<Window98Props> = ({
           )}
         </div>
       </div>
-      <div className="window-body">
+      <div className="window-body" style={{
+        flex: 1,
+        overflow: 'auto',
+        minHeight: 0
+      }}>
         {children}
       </div>
     </div>

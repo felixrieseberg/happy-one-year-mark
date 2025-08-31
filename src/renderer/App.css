@@ -1,0 +1,23 @@
+/* Make the window title bar draggable */
+.window {
+  -webkit-app-region: drag;
+}
+
+/* Make buttons in the title bar clickable (not draggable) */
+.window .title-bar .title-bar-controls button {
+  -webkit-app-region: no-drag;
+}
+
+/* Make the window content area not draggable */
+.window .window-body {
+  -webkit-app-region: no-drag;
+}
+
+/* Ensure the entire title bar is draggable except for buttons */
+.title-bar {
+  -webkit-app-region: drag;
+}
+
+.title-bar button {
+  -webkit-app-region: no-drag;
+}

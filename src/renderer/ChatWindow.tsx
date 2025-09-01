@@ -5,6 +5,14 @@ import { Message } from '../data/types';
 import { USERS } from '../data/users';
 import './ChatWindow.css';
 
+// Import images
+import buttonWarn from './images/button_warn.png';
+import buttonBlock from './images/button_block.png';
+import buttonAddBuddy from './images/button_add_buddy.png';
+import buttonGetInfo from './images/button_get_info.png';
+import buttonTalk from './images/button_talk.png';
+import buttonSend from './images/button_send.png';
+
 interface ChatWindowProps {
   buddy: {
     id: string;
@@ -90,13 +98,36 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
               placeholder="Type your message here..."
               rows={3}
             />
-            <div className="chat-buttons">
-              <button onClick={handleSend}>Send</button>
-              <button>Font</button>
-              <button>Color</button>
-            </div>
           </div>
         </div>
+        
+        {/* Bottom toolbar */}
+        <fieldset className="chat-toolbar">
+          <div>
+          <button className="toolbar-btn" title="Warn">
+            <img src={buttonWarn} alt="Warn" />
+          </button>
+          <button className="toolbar-btn" title="Block">
+            <img src={buttonBlock} alt="Block" />
+          </button>
+          </div>
+          <div>
+          <button className="toolbar-btn" title="Add Buddy">
+            <img src={buttonAddBuddy} alt="Add Buddy" />
+          </button>
+          <button className="toolbar-btn" title="Get Info">
+            <img src={buttonGetInfo} alt="Get Info" />
+          </button>
+          <button className="toolbar-btn" title="Talk">
+            <img src={buttonTalk} alt="Talk" />
+          </button>
+          </div>
+          <div>
+          <button className="toolbar-btn send-btn" onClick={handleSend} title="Send">
+            <img src={buttonSend} alt="Send" />
+          </button>
+          </div>
+        </fieldset>
       </div>
     </Window98>
   );

@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import BuddyListTree from './BuddyListTree';
+import { USERS } from '../data/users';
 import './BuddyList.css';
 
 const BuddyList: React.FC = () => {
   const [activeTab, setActiveTab] = useState('online');
+
+  // Convert users to buddy format
+  const buddies = Object.values(USERS).map(user => ({
+    id: user.id,
+    name: user.username || user.name,
+    screenName: user.id,
+    status: undefined
+  }));
 
   return (
     <div className="aim-buddy-list">
@@ -40,7 +49,7 @@ const BuddyList: React.FC = () => {
                   {
                     id: 'buddies',
                     name: 'Buddies',
-                    buddies: []
+                    buddies: buddies
                   },
                   {
                     id: 'family',

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import BuddyListTree from './BuddyListTree';
+import ChildWindow from './ChildWindow';
+import ChatWindow from './ChatWindow';
 import { USERS } from '../data/users';
 import './BuddyList.css';
 
 const BuddyList: React.FC = () => {
   const [activeTab, setActiveTab] = useState('online');
+  const [openChats, setOpenChats] = useState<Array<{ buddy: any; id: string }>>([]);
 
   // Convert users to buddy format
   const buddies = Object.values(USERS).map(user => ({
@@ -13,6 +16,22 @@ const BuddyList: React.FC = () => {
     screenName: user.id,
     status: undefined
   }));
+
+  const handleBuddyDoubleClick = (buddy: any) => {
+    console.log('Buddy clicked:', buddy);
+    // Check if chat is already open
+    const existingChat = openChats.find(chat => chat.buddy.id === buddy.id);
+    if (!existingChat) {
+      console.log('Opening new chat window for:', buddy.name);
+      setOpenChats([...openChats, { buddy, id: `chat-${buddy.id}-${Date.now()}` }]);
+    } else {
+      console.log('Chat already open for:', buddy.name);
+    }
+  };
+
+  const handleChatClose = (chatId: string) => {
+    setOpenChats(openChats.filter(chat => chat.id !== chatId));
+  };
 
   return (
     <div className="aim-buddy-list">
@@ -67,10 +86,7 @@ const BuddyList: React.FC = () => {
                     buddies: []
                   }
                 ]}
-                onBuddyDoubleClick={(buddy) => {
-                  console.log('Double clicked buddy:', buddy);
-                  // This is where you would open a chat window
-                }}
+                onBuddyDoubleClick={handleBuddyDoubleClick}
               />
             </div>
           ) : (
@@ -92,6 +108,22 @@ const BuddyList: React.FC = () => {
       <div className="aim-bottom">
         <button className="aim-ad-button">Click Here Now</button>
       </div>
+
+      {/* Render chat windows */}
+      {openChats.map(({ buddy, id }) => (
+        <ChildWindow
+          key={id}
+          title={`Chat with ${buddy.name}`}
+          width={600}
+          height={400}
+          onClose={() => handleChatClose(id)}
+        >
+          <ChatWindow
+            buddy={buddy}
+            onClose={() => handleChatClose(id)}
+          />
+        </ChildWindow>
+      ))}
     </div>
   );
 };

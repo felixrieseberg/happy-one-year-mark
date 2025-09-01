@@ -34,7 +34,7 @@ const BuddyListTree: React.FC<BuddyListTreeProps> = ({ groups, onBuddyDoubleClic
     setExpandedGroups(newExpanded);
   };
 
-  const handleBuddyDoubleClick = (buddy: Buddy) => {
+  const handleBuddyClick = (buddy: Buddy) => {
     if (onBuddyDoubleClick) {
       onBuddyDoubleClick(buddy);
     }
@@ -63,7 +63,7 @@ const BuddyListTree: React.FC<BuddyListTreeProps> = ({ groups, onBuddyDoubleClic
                   <div
                     key={buddy.id}
                     className="buddy-item"
-                    onDoubleClick={() => handleBuddyDoubleClick(buddy)}
+                    onClick={() => handleBuddyClick(buddy)}
                   >
                     <span className="buddy-name">{buddy.name}</span>
                     {buddy.status && (

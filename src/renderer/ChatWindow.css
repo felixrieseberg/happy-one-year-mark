@@ -162,9 +162,6 @@
 .toolbar-btn img {
   display: block;
   width: auto;
-  height: 72px;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  height: 62px;
 }
 

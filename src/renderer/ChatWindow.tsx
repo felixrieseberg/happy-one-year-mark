@@ -12,6 +12,7 @@ import buttonAddBuddy from './images/button_add_buddy.png';
 import buttonGetInfo from './images/button_get_info.png';
 import buttonTalk from './images/button_talk.png';
 import buttonSend from './images/button_send.png';
+import userAvatar from './data/avatars/shinypb.png';
 
 interface ChatWindowProps {
   buddy: User;
@@ -21,6 +22,9 @@ interface ChatWindowProps {
 const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Array<{ from: string; text: string; timestamp: Date; attachments?: string[] }>>([]);
+  
+  // Generate window title
+  const windowTitle = `Instant Message with ${buddy.screenname || buddy.id || buddy.name}${buddy.name !== (buddy.screenname || buddy.id) ? ` (${buddy.name})` : ''}`;
 
   // Load predefined messages when the component mounts
   useEffect(() => {
@@ -56,10 +60,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
 
   return (
     <Window98
-      title={`Instant Message with ${buddy.screenname || buddy.id || buddy.name}${buddy.name !== (buddy.screenname || buddy.id) ? ` (${buddy.name})` : ''}`}
-      onClose={onClose}
-      onMinimize={() => (window.opener as Window & { electronAPI?: any })?.electronAPI?.minimizeWindow()}
-      onMaximize={() => (window.opener as Window & { electronAPI?: any })?.electronAPI?.maximizeWindow()}
+      title={windowTitle}
+      onClose={() => {
+        // For child windows, use title-based closing
+        if ((window as any).electronAPI) {
+          (window as any).electronAPI.closeWindowByTitle(windowTitle);
+        }
+        // Also call the passed onClose handler to clean up state
+        onClose();
+      }}
+      onMinimize={() => {
+        // For child windows, use title-based minimizing
+        if ((window as any).electronAPI) {
+          (window as any).electronAPI.minimizeWindowByTitle(windowTitle);
+        }
+      }}
+      showMaximize={false}
       width="100%"
       height="100%"
     >
@@ -93,7 +109,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
         
         <div className="chat-input-container">
           <div className="avatar-column user-avatar">
-            <div className="avatar-placeholder">S</div>
+            <img src={userAvatar} alt="Shinypb" className="avatar-image" />
           </div>
           <div className="chat-input-area">
             <textarea

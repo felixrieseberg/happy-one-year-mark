@@ -76,12 +76,14 @@ const createWindow = (): void => {
 
   // Add handler for new windows created
   mainWindow.webContents.on('did-create-window', (childWindow, details) => {
+    console.log('Created new window:', details.frameName);
     childWindow.show();
     childWindow.focus();
     
     // Set the window title based on the window name
     if (details.frameName && details.frameName.startsWith('Instant Message with')) {
       childWindow.setTitle(details.frameName);
+      console.log('Set window title to:', details.frameName);
       // Store the window reference
       chatWindows.set(details.frameName, childWindow);
       
@@ -90,23 +92,38 @@ const createWindow = (): void => {
         chatWindows.delete(details.frameName);
       });
     }
+    
+    // Log window count
+    console.log('Total windows:', BrowserWindow.getAllWindows().length);
   });
 
   // Handle window control IPC messages
-  ipcMain.on('window-minimize', () => {
-    mainWindow.minimize();
-  });
-
-  ipcMain.on('window-maximize', () => {
-    if (mainWindow.isMaximized()) {
-      mainWindow.restore();
-    } else {
-      mainWindow.maximize();
+  ipcMain.on('window-minimize', (event) => {
+    // Get the window that sent this event
+    const window = BrowserWindow.fromWebContents(event.sender);
+    console.log('Minimize request from window:', window?.getTitle());
+    if (window) {
+      window.minimize();
     }
   });
 
-  ipcMain.on('window-close', () => {
-    mainWindow.close();
+  ipcMain.on('window-maximize', (event) => {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (window) {
+      if (window.isMaximized()) {
+        window.restore();
+      } else {
+        window.maximize();
+      }
+    }
+  });
+
+  ipcMain.on('window-close', (event) => {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    console.log('Close request from window:', window?.getTitle());
+    if (window) {
+      window.close();
+    }
   });
   
   // Handle focusing child windows
@@ -124,6 +141,29 @@ const createWindow = (): void => {
     const window = BrowserWindow.fromWebContents(event.sender);
     if (window) {
       window.setTitle(title);
+    }
+  });
+  
+  // Handle minimizing window by title
+  ipcMain.on('minimize-window-by-title', (event, title) => {
+    console.log('Minimize window by title:', title);
+    console.log('Available windows:', Array.from(chatWindows.keys()));
+    const targetWindow = chatWindows.get(title);
+    if (targetWindow && !targetWindow.isDestroyed()) {
+      console.log('Minimizing window');
+      targetWindow.minimize();
+    } else {
+      console.log('Window not found or destroyed');
+    }
+  });
+  
+  // Handle closing window by title
+  ipcMain.on('close-window-by-title', (event, title) => {
+    console.log('Close window by title:', title);
+    const targetWindow = chatWindows.get(title);
+    if (targetWindow && !targetWindow.isDestroyed()) {
+      console.log('Closing window');
+      targetWindow.close();
     }
   });
 };

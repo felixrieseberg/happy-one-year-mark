@@ -9,5 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   maximizeWindow: () => ipcRenderer.send('window-maximize'),
   closeWindow: () => ipcRenderer.send('window-close'),
   focusWindow: (windowName: string) => ipcRenderer.send('focus-window', windowName),
-  setWindowTitle: (title: string) => ipcRenderer.send('set-window-title', title)
+  setWindowTitle: (title: string) => ipcRenderer.send('set-window-title', title),
+  minimizeWindowByTitle: (title: string) => ipcRenderer.send('minimize-window-by-title', title),
+  closeWindowByTitle: (title: string) => ipcRenderer.send('close-window-by-title', title),
+  getWindowTitle: () => window.document.title
 });

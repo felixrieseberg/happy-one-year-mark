@@ -29,7 +29,7 @@ const App: React.FC = () => {
         title="Buddy List"
         onClose={handleClose}
         onMinimize={handleMinimize}
-        onMaximize={handleMaximize}
+        showMaximize={false}
         width="100%"
         height="100%"
       >

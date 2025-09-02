@@ -1,9 +1,5 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
-
 import { contextBridge, ipcRenderer } from 'electron';
 
-// Expose window control methods to the renderer process
 contextBridge.exposeInMainWorld('electronAPI', {
   minimizeWindow: () => ipcRenderer.send('window-minimize'),
   maximizeWindow: () => ipcRenderer.send('window-maximize'),
@@ -13,7 +9,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   minimizeWindowByTitle: (title: string) => ipcRenderer.send('minimize-window-by-title', title),
   closeWindowByTitle: (title: string) => ipcRenderer.send('close-window-by-title', title),
   getWindowTitle: () => window.document.title,
-  // API key management
   storeApiKey: (apiKey: string) => ipcRenderer.invoke('store-api-key', apiKey),
   getApiKey: () => ipcRenderer.invoke('get-api-key'),
   clearApiKey: () => ipcRenderer.invoke('clear-api-key'),

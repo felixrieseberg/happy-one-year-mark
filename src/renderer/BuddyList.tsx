@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import BuddyListTree from './BuddyListTree';
 import ChildWindow from './ChildWindow';
 import ChatWindow from './ChatWindow';
@@ -29,29 +29,22 @@ const BuddyList: React.FC = () => {
   );
 
   const handleBuddyDoubleClick = (buddy: User) => {
-    console.log('Buddy clicked:', buddy);
     
     // Check if a chat is already open for this buddy
     const existingChatIndex = openChats.findIndex(chat => chat.buddy.id === buddy.id);
     if (existingChatIndex !== -1) {
       const existingChat = openChats[existingChatIndex];
-      console.log('Chat already open for:', buddy.name);
       
-      // Use IPC to focus the window
       const windowTitle = getChatWindowTitle(buddy);
       window.electronAPI?.focusWindow(windowTitle);
       
-      // Mark buddy as read
       setReadBuddies(prev => new Set([...prev, buddy.id]));
       return;
     }
     
-    // Open new chat window
-    console.log('Opening new chat window for:', buddy.name);
     const chatId = `chat-${buddy.id}-${Date.now()}`;
     setOpenChats([...openChats, { buddy, id: chatId, windowRef: null }]);
     
-    // Mark buddy as read
     setReadBuddies(prev => new Set([...prev, buddy.id]));
   };
   

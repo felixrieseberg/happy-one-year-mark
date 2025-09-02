@@ -18,24 +18,17 @@ const App: React.FC = () => {
     window.electronAPI.minimizeWindow();
   };
 
-  const handleMaximize = () => {
-    window.electronAPI.maximizeWindow();
-  };
   
-  // Play welcome sounds when the app starts
   useEffect(() => {
     const playAudioSequence = async () => {
-      // Play Welcome.mp3
       const welcome = new Audio(welcomeAudio);
       welcome.play();
       await new Promise(resolve => welcome.addEventListener('ended', resolve, { once: true }));
       
-      // Play BuddyIn.mp3
       const buddyIn = new Audio(buddyInAudio);
       buddyIn.play();
       await new Promise(resolve => buddyIn.addEventListener('ended', resolve, { once: true }));
       
-      // Play IM.mp3 twice
       const im1 = new Audio(imAudio);
       im1.play();
       await new Promise(resolve => im1.addEventListener('ended', resolve, { once: true }));
@@ -45,9 +38,8 @@ const App: React.FC = () => {
     };
     
     playAudioSequence().catch(err => {
-      console.error('Error playing audio sequence:', err);
     });
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   return (
     <div style={{ 

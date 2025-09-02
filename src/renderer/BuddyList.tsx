@@ -107,8 +107,57 @@ const BuddyList: React.FC = () => {
               />
             </div>
           ) : (
-            <div>
-              List Setup options...
+            <div style={{ padding: '8px' }}>
+              <fieldset>
+                <legend>Buddy List Options</legend>
+                <div style={{ marginBottom: '8px' }}>
+                  <label>
+                    <input type="checkbox" defaultChecked />
+                    Show idle time for buddies
+                  </label>
+                </div>
+                <div style={{ marginBottom: '8px' }}>
+                  <label>
+                    <input type="checkbox" defaultChecked />
+                    Play sounds when buddies sign on/off
+                  </label>
+                </div>
+                <div style={{ marginBottom: '8px' }}>
+                  <label>
+                    <input type="checkbox" />
+                    Sort buddies alphabetically
+                  </label>
+                </div>
+              </fieldset>
+              
+              <fieldset style={{ marginTop: '16px' }}>
+                <legend>Privacy Settings</legend>
+                <div style={{ marginBottom: '8px' }}>
+                  <label>
+                    <input type="checkbox" />
+                    Allow only buddies to see me online
+                  </label>
+                </div>
+                <div style={{ marginBottom: '8px' }}>
+                  <label>
+                    <input type="checkbox" />
+                    Block messages from non-buddies
+                  </label>
+                </div>
+              </fieldset>
+              
+              <fieldset style={{ marginTop: '16px' }}>
+                <legend>Away Message</legend>
+                <textarea 
+                  className="sunken-panel" 
+                  style={{ width: '100%', height: '60px', resize: 'none' }}
+                  placeholder="I am away from my computer right now."
+                  defaultValue="I am away from my computer right now."
+                />
+                <div style={{ marginTop: '8px' }}>
+                  <button>Save Away Message</button>
+                </div>
+              </fieldset>
             </div>
           )}
         </div>

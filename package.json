@@ -1,8 +1,8 @@
 {
-  "name": "happy-one-year-mark",
-  "productName": "happy-one-year-mark",
+  "name": "mim",
+  "productName": "Mark Instant Messenger",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Mark's very own instant messenger",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",

@@ -4,6 +4,7 @@ import maggieAvatar from './avatars/maggie.png';
 import nateParrottAvatar from './avatars/nate_parrott.jpg';
 import graceyunAvatar from './avatars/graceyun.jpg';
 import felixAvatar from './avatars/felix.png';
+import claudeAvatar from './avatars/claude.png';
 
 export const USERS: Record<string, User> = {
   'felix': { id: 'felix', name: 'Felix Rieseberg', screenname: 'FelixSwimsAlot', avatar: felixAvatar },
@@ -44,4 +45,6 @@ export const USERS: Record<string, User> = {
   'willc': { id: 'willc', name: 'William Chou' },
   'dianne': { id: 'dianne', name: 'Dianne Penn' },
   'leon': { id: 'leon', name: 'Leon Wu', screenname: 'BIG TIGER' },
+  'claude': { id: 'claude', name: 'Claude', screenname: 'Claude', avatar: claudeAvatar },
+  'ibu': { id: 'ibu', name: 'Ibu' },
 };

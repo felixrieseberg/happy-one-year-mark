@@ -128,5 +128,8 @@ export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
   ]],
   ['leon', [
     { from: USERS['leon'], message: "hApPy 1 yEaR!!1!" },
+  ]],
+  ['ibu', [
+    { from: USERS['ibu'], message: "cool away message dude, happy 1 year. would you mind FTPing my action script changes to the SmarterChild Flash intro when you get back?" },
   ]]
 ]);

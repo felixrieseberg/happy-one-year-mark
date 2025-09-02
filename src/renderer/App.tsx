@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Window98 from './Window98';
 import BuddyList from './BuddyList';
 import './App.css';
 import "98.css";
+
+// Import audio files
+import welcomeAudio from './audio/Welcome.mp3';
+import buddyInAudio from './audio/BuddyIn.mp3';
+import imAudio from './audio/IM.mp3';
 
 const App: React.FC = () => {
   const handleClose = () => {
@@ -16,6 +21,36 @@ const App: React.FC = () => {
   const handleMaximize = () => {
     window.electronAPI.maximizeWindow();
   };
+  
+  // Play welcome sounds when the app starts
+  useEffect(() => {
+    const playAudioSequence = async () => {
+      // Wait 2 seconds before starting
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Play Welcome.mp3
+      const welcome = new Audio(welcomeAudio);
+      welcome.play();
+      await new Promise(resolve => welcome.addEventListener('ended', resolve, { once: true }));
+      
+      // Play BuddyIn.mp3
+      const buddyIn = new Audio(buddyInAudio);
+      buddyIn.play();
+      await new Promise(resolve => buddyIn.addEventListener('ended', resolve, { once: true }));
+      
+      // Play IM.mp3 twice
+      const im1 = new Audio(imAudio);
+      im1.play();
+      await new Promise(resolve => im1.addEventListener('ended', resolve, { once: true }));
+      
+      const im2 = new Audio(imAudio);
+      im2.play();
+    };
+    
+    playAudioSequence().catch(err => {
+      console.error('Error playing audio sequence:', err);
+    });
+  }, []); // Empty dependency array means this runs once on mount
 
   return (
     <div style={{ 

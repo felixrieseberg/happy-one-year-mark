@@ -12,6 +12,7 @@ import buttonAddBuddy from './images/button_add_buddy.png';
 import buttonGetInfo from './images/button_get_info.png';
 import buttonTalk from './images/button_talk.png';
 import buttonSend from './images/button_send.png';
+import buttonSendActive from './images/btn_send_active.png';
 import userAvatar from './data/avatars/shinypb.png';
 
 interface ChatWindowProps {
@@ -145,8 +146,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
           </button>
           </div>
           <div>
-          <button className="toolbar-btn send-btn" onClick={handleSend} title="Send">
-            <img src={buttonSend} alt="Send" />
+          <button 
+            className="toolbar-btn send-btn" 
+            onClick={handleSend} 
+            title="Send"
+            disabled={!message.trim()}
+          >
+            <img src={message.trim() ? buttonSendActive : buttonSend} alt="Send" />
           </button>
           </div>
         </fieldset>

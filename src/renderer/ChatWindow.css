@@ -165,3 +165,8 @@
   height: 62px;
 }
 
+.toolbar-btn:disabled {
+  cursor: default;
+  opacity: 1; /* Keep full opacity since we're switching images */
+}
+

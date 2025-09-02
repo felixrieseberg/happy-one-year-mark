@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Window98 from './Window98';
-import { MESSAGES } from '../data/messages';
-import { Message } from '../data/types';
-import { USERS } from '../data/users';
+import { MESSAGES } from './data/messages';
+import { Message } from './data/types';
+import { USERS } from './data/users';
 import './ChatWindow.css';
 
 // Import images

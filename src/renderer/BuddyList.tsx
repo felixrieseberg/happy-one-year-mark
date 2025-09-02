@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import BuddyListTree from './BuddyListTree';
 import ChildWindow from './ChildWindow';
 import ChatWindow from './ChatWindow';
-import { USERS } from '../data/users';
+import { USERS } from './data/users';
 import './BuddyList.css';
 
 const BuddyList: React.FC = () => {

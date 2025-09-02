@@ -4,6 +4,7 @@ import { USERS } from "./users";
 import santiagoAttachment from './attachments/santiago.png';
 import raphAttachment from './attachments/raph.png';
 import willcAttachment from './attachments/willc.webp';
+import ivyAttachment from './attachments/ivy.png';
 
 export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
   ['felix', [
@@ -131,5 +132,11 @@ export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
   ]],
   ['ibu', [
     { from: USERS['ibu'], message: "cool away message dude, happy 1 year. would you mind FTPing my action script changes to the SmarterChild Flash intro when you get back?" },
-  ]]
+  ]],
+  ['hoi', [
+    { from: USERS['hoi'], message: "Every time I see your name pop up on Slack, I immediately hear REM in my head, so here's to wishing you a🎵 Shiny happy one year anniversary 🎵" },
+  ]],
+  ['ivy', [
+    { from: USERS['ivy'], message: "hApPy OnE yEaR working with u has been so fun haha lol XD XD XD", attachments: [ivyAttachment] },
+  ]],
 ]);

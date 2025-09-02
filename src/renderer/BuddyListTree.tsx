@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
 import './BuddyListTree.css';
-
-interface Buddy {
-  id: string;
-  name: string;
-  screenName: string;
-  status?: string;
-}
+import { User } from './data/types';
 
 interface BuddyGroup {
   id: string;
   name: string;
-  buddies: Buddy[];
+  buddies: User[];
 }
 
 interface BuddyListTreeProps {
   groups: BuddyGroup[];
-  onBuddyDoubleClick?: (buddy: Buddy) => void;
+  onBuddyDoubleClick?: (buddy: User) => void;
 }
 
 const BuddyListTree: React.FC<BuddyListTreeProps> = ({ groups, onBuddyDoubleClick }) => {
@@ -34,14 +28,11 @@ const BuddyListTree: React.FC<BuddyListTreeProps> = ({ groups, onBuddyDoubleClic
     setExpandedGroups(newExpanded);
   };
 
-  const handleBuddyClick = (buddy: Buddy) => {
+  const handleBuddyClick = (buddy: User) => {
     if (onBuddyDoubleClick) {
       onBuddyDoubleClick(buddy);
     }
   };
-
-  // Calculate total online buddies
-  const totalBuddies = groups.reduce((sum, group) => sum + group.buddies.length, 0);
 
   return (
     <div className="buddy-list-tree">
@@ -65,10 +56,7 @@ const BuddyListTree: React.FC<BuddyListTreeProps> = ({ groups, onBuddyDoubleClic
                     className="buddy-item"
                     onClick={() => handleBuddyClick(buddy)}
                   >
-                    <span className="buddy-name">{buddy.name}</span>
-                    {buddy.status && (
-                      <span className="buddy-status"> - {buddy.status}</span>
-                    )}
+                    <span className="buddy-name">{buddy.screenname || buddy.id || buddy.name}</span>
                   </div>
                 ))}
                 {group.buddies.length === 0 && (

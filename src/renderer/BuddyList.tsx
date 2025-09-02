@@ -3,6 +3,7 @@ import BuddyListTree from './BuddyListTree';
 import ChildWindow from './ChildWindow';
 import ChatWindow from './ChatWindow';
 import { USERS } from './data/users';
+import { User } from './data/types';
 import './BuddyList.css';
 
 // Import images
@@ -13,26 +14,14 @@ import aimHeader from './images/aim_header.png';
 
 const BuddyList: React.FC = () => {
   const [activeTab, setActiveTab] = useState('online');
-  const [openChats, setOpenChats] = useState<Array<{ buddy: any; id: string }>>([]);
+  const [openChats, setOpenChats] = useState<Array<{ buddy: User; id: string }>>([]);
+  const buddies = Object.values(USERS);
 
-  // Convert users to buddy format
-  const buddies = Object.values(USERS).map(user => ({
-    id: user.id,
-    name: user.screenname || user.name,
-    screenName: user.id,
-    status: undefined
-  }));
-
-  const handleBuddyDoubleClick = (buddy: any) => {
+  const handleBuddyDoubleClick = (buddy: User) => {
     console.log('Buddy clicked:', buddy);
-    // Check if chat is already open
-    const existingChat = openChats.find(chat => chat.buddy.id === buddy.id);
-    if (!existingChat) {
-      console.log('Opening new chat window for:', buddy.name);
-      setOpenChats([...openChats, { buddy, id: `chat-${buddy.id}-${Date.now()}` }]);
-    } else {
-      console.log('Chat already open for:', buddy.name);
-    }
+    // Always open a new chat window
+    console.log('Opening new chat window for:', buddy.name);
+    setOpenChats([...openChats, { buddy, id: `chat-${buddy.id}-${Date.now()}` }]);
   };
 
   const handleChatClose = (chatId: string) => {
@@ -117,13 +106,14 @@ const BuddyList: React.FC = () => {
       </div>
 
       {/* Render chat windows */}
-      {openChats.map(({ buddy, id }) => (
+      {openChats.map(({ buddy, id }, index) => (
         <ChildWindow
           key={id}
           title={`Chat with ${buddy.name}`}
           width={600}
           height={400}
           onClose={() => handleChatClose(id)}
+          index={index}
         >
           <ChatWindow
             buddy={buddy}

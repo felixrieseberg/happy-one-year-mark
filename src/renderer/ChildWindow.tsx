@@ -9,15 +9,16 @@ interface ChildWindowProps {
   height?: number;
   onClose?: () => void;
   children: React.ReactNode;
+  index?: number;
 }
 
 const ChildWindow: React.FC<ChildWindowProps> = ({
-  url = '',
   title = 'Chat Window',
   width = 700,
   height = 500,
   onClose,
-  children
+  children,
+  index = 0
 }) => {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const windowRef = useRef<Window | null>(null);
@@ -28,9 +29,20 @@ const ChildWindow: React.FC<ChildWindowProps> = ({
     containerDiv.style.width = '100%';
     containerDiv.style.height = '100%';
 
-    // Open the new window
-    const windowFeatures = `width=${width},height=${height}`;
-    const newWindow = window.open('', title, windowFeatures);
+    // Calculate position offset from parent window
+    const parentLeft = window.screenX || window.screenLeft || 0;
+    const parentTop = window.screenY || window.screenTop || 0;
+    const parentWidth = window.outerWidth || 200;
+    
+    // Position new window to the right of parent with some spacing
+    // Stagger windows by 30 pixels for each additional window
+    const newLeft = parentLeft + parentWidth + 20 + (index * 30);
+    const newTop = parentTop + (index * 30);
+    
+    // Open the new window with a unique name and position
+    const windowFeatures = `width=${width},height=${height},left=${newLeft},top=${newTop}`;
+    const windowName = `chat_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    const newWindow = window.open('', windowName, windowFeatures);
 
     if (!newWindow) {
       console.error('Failed to open window - popup may be blocked');
@@ -114,7 +126,7 @@ const ChildWindow: React.FC<ChildWindowProps> = ({
         windowRef.current.close();
       }
     };
-  }, [title, width, height, onClose]);
+  }, []); // Remove dependencies to prevent re-creating windows
 
   // Render the portal
   if (!container) {

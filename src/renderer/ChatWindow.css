@@ -48,6 +48,13 @@
   color: #666;
 }
 
+.avatar-image {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #7B9FC8;
+  object-fit: cover;
+}
+
 .chat-messages {
   flex: 1;
   overflow-y: auto;

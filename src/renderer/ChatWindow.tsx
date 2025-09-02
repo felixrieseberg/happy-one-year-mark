@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Window98 from './Window98';
 import { MESSAGES } from './data/messages';
-import { Message } from './data/types';
+import { Message, User } from './data/types';
 import { USERS } from './data/users';
 import './ChatWindow.css';
 
@@ -14,11 +14,7 @@ import buttonTalk from './images/button_talk.png';
 import buttonSend from './images/button_send.png';
 
 interface ChatWindowProps {
-  buddy: {
-    id: string;
-    name: string;
-    screenName: string;
-  };
+  buddy: User;
   onClose: () => void;
 }
 
@@ -59,7 +55,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
 
   return (
     <Window98
-      title={`Instant Message with ${buddy.name}`}
+      title={`Instant Message with ${buddy.screenname || buddy.id || buddy.name}${buddy.name !== (buddy.screenname || buddy.id) ? ` (${buddy.name})` : ''}`}
       onClose={onClose}
       onMinimize={() => (window.opener as Window & { electronAPI?: any })?.electronAPI?.minimizeWindow()}
       onMaximize={() => (window.opener as Window & { electronAPI?: any })?.electronAPI?.maximizeWindow()}
@@ -69,11 +65,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
       <div className="chat-window">
         <div className="chat-messages-container">
           <div className="avatar-column buddy-avatar">
-            <div className="avatar-placeholder">?</div>
+            {buddy.avatar ? (
+              <img src={buddy.avatar} alt={buddy.name} className="avatar-image" />
+            ) : (
+              <div className="avatar-placeholder">?</div>
+            )}
           </div>
           <div className="chat-messages sunken-panel">
             {messages.length === 0 ? (
-              <div className="chat-empty">Start your conversation with {buddy.name}</div>
+              <div className="chat-empty">Start your conversation with {buddy.screenname || buddy.id || buddy.name}</div>
             ) : (
               messages.map((msg, index) => (
                 <div key={index} className="chat-message">

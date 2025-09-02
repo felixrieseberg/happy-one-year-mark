@@ -10,6 +10,9 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+// Store mapping of chat windows
+const chatWindows = new Map<string, BrowserWindow>();
+
 const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -25,6 +28,9 @@ const createWindow = (): void => {
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  
+  // Set the main window title
+  mainWindow.setTitle('Mark Instant Messenger');
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
@@ -59,7 +65,6 @@ const createWindow = (): void => {
         roundedCorners: false,
         minHeight: 300,
         minWidth: 300,
-        parent: mainWindow,
         webPreferences: {
           preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
           contextIsolation: true,
@@ -70,9 +75,21 @@ const createWindow = (): void => {
   });
 
   // Add handler for new windows created
-  mainWindow.webContents.on('did-create-window', (childWindow) => {
+  mainWindow.webContents.on('did-create-window', (childWindow, details) => {
     childWindow.show();
     childWindow.focus();
+    
+    // Set the window title based on the window name
+    if (details.frameName && details.frameName.startsWith('Instant Message with')) {
+      childWindow.setTitle(details.frameName);
+      // Store the window reference
+      chatWindows.set(details.frameName, childWindow);
+      
+      // Clean up when window is closed
+      childWindow.on('closed', () => {
+        chatWindows.delete(details.frameName);
+      });
+    }
   });
 
   // Handle window control IPC messages
@@ -90,6 +107,24 @@ const createWindow = (): void => {
 
   ipcMain.on('window-close', () => {
     mainWindow.close();
+  });
+  
+  // Handle focusing child windows
+  ipcMain.on('focus-window', (event, windowName) => {
+    console.log('Focusing window with name:', windowName);
+    const targetWindow = chatWindows.get(windowName);
+    if (targetWindow && !targetWindow.isDestroyed()) {
+      targetWindow.focus();
+      targetWindow.show();
+    }
+  });
+  
+  // Handle setting window title
+  ipcMain.on('set-window-title', (event, title) => {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    if (window) {
+      window.setTitle(title);
+    }
   });
 };
 

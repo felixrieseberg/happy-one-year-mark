@@ -7,5 +7,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 contextBridge.exposeInMainWorld('electronAPI', {
   minimizeWindow: () => ipcRenderer.send('window-minimize'),
   maximizeWindow: () => ipcRenderer.send('window-maximize'),
-  closeWindow: () => ipcRenderer.send('window-close')
+  closeWindow: () => ipcRenderer.send('window-close'),
+  focusWindow: (windowName: string) => ipcRenderer.send('focus-window', windowName),
+  setWindowTitle: (title: string) => ipcRenderer.send('set-window-title', title)
 });

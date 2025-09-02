@@ -10,6 +10,7 @@ interface ChildWindowProps {
   onClose?: () => void;
   children: React.ReactNode;
   index?: number;
+  onWindowCreated?: (windowRef: Window) => void;
 }
 
 const ChildWindow: React.FC<ChildWindowProps> = ({
@@ -18,7 +19,8 @@ const ChildWindow: React.FC<ChildWindowProps> = ({
   height = 500,
   onClose,
   children,
-  index = 0
+  index = 0,
+  onWindowCreated
 }) => {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const windowRef = useRef<Window | null>(null);
@@ -41,7 +43,8 @@ const ChildWindow: React.FC<ChildWindowProps> = ({
     
     // Open the new window with a unique name and position
     const windowFeatures = `width=${width},height=${height},left=${newLeft},top=${newTop}`;
-    const windowName = `chat_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+    // Use the title as the window name for identification
+    const windowName = title;
     const newWindow = window.open('', windowName, windowFeatures);
 
     if (!newWindow) {
@@ -51,15 +54,22 @@ const ChildWindow: React.FC<ChildWindowProps> = ({
 
     windowRef.current = newWindow;
     console.log('ChildWindow: Window opened successfully');
+    
+    // Report window creation
+    if (onWindowCreated) {
+      onWindowCreated(newWindow);
+    }
 
     // Setup the new window document
     const setupWindow = () => {
       const externalDoc = newWindow.document;
-      externalDoc.title = title;
-
+      
       // Clear the document
       externalDoc.head.innerHTML = '';
       externalDoc.body.innerHTML = '';
+      
+      // Set the document title first
+      externalDoc.title = title;
 
       // Copy styles from parent window
       const parentStyles = Array.from(document.styleSheets);
@@ -102,6 +112,11 @@ const ChildWindow: React.FC<ChildWindowProps> = ({
       externalDoc.body.appendChild(containerDiv);
       setContainer(containerDiv);
       console.log('ChildWindow: Container set and ready');
+      
+      // Set window title via IPC for Electron
+      if ((newWindow as any).electronAPI?.setWindowTitle) {
+        (newWindow as any).electronAPI.setWindowTitle(title);
+      }
     };
 
     // Setup the window

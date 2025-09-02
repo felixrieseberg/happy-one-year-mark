@@ -3,12 +3,15 @@ import { USERS } from "./users";
 
 import santiagoAttachment from './attachments/santiago.png';
 import raphAttachment from './attachments/raph.png';
+import willcAttachment from './attachments/willc.webp';
 
 export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
   ['felix', [
-    { from: USERS['felix'], message: "Hey there! How's it going?" },
-    { from: USERS['felix'], message: "Did you check out that new movie?" },
-    { from: USERS['felix'], message: "Let's catch up sometime soon!" }
+    { from: USERS['felix'], message: "maaaaaaaaaaaaaaaaaaaark" },
+    { from: USERS['felix'], message: "hey buddy it's me, felix" },
+    { from: USERS['felix'], message: "i just wanted to say happy one year at anthropic!!" },
+    { from: USERS['felix'], message: "you're doing great things here and i'm so proud of you :)" },
+    { from: USERS['felix'], message: "also, thank you so much for the very warm welcome you gave me and the kindness you show to everyone else around here" },
   ]],
   ['jerome', [
     { from: USERS['jerome'], message: "hb" },
@@ -102,5 +105,25 @@ export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
   ]],
   ['maggie', [
     { from: USERS['maggie'], message: "xXx ~HAPPY ANTVERSARY!~ xXx\n\nu rock!!! keep on shining and pb'ing lmao - excited for moar to come!!! BD", attachments: [] },
+  ]],
+  ['mello', [
+    { from: USERS['mello'], message: "hbhbhbhb!" },
+    { from: USERS['mello'], message: "every time we chat I come away with more awe and wonder for the crazy world we are buidling xD" },
+  ]],
+  ['jacques', [
+    { from: USERS['jacques'], message: "happy 1 year!" },
+  ]],
+  ['ab', [
+    { from: USERS['ab'], message: ",.-:'^':-.,_,.-:'^':-.,_,.-:'^':Happy antiversary shiny :D!!!:'^':-.,_,.-:'^':-.,_,.-:'^':-.," },
+  ]],
+  ['willc', [
+    { from: USERS['willc'], message: "when I see \"shiny\" I always think of the crab from moana", attachments: [
+      willcAttachment
+    ] },
+    { from: USERS['willc'], message: "but then I see \"pb\" and I think peanut butter" },
+    { from: USERS['willc'], message: "happy 1 year!" },
+  ]],
+  ['dianne', [
+    { from: USERS['dianne'], message: "Happy one year Mark!" },
   ]],
 ]);

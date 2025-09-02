@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import BuddyListTree from './BuddyListTree';
 import ChildWindow from './ChildWindow';
 import ChatWindow from './ChatWindow';
@@ -16,7 +16,7 @@ import aolAd from './images/aol_ad.png';
 
 const BuddyList: React.FC = () => {
   const [activeTab, setActiveTab] = useState('online');
-  const [openChats, setOpenChats] = useState<Array<{ buddy: User; id: string }>>([]);
+  const [openChats, setOpenChats] = useState<Array<{ buddy: User; id: string; windowRef: Window | null }>>([]);
   const [readBuddies, setReadBuddies] = useState<Set<string>>(new Set());
   const buddies = Object.values(USERS);
   
@@ -29,29 +29,50 @@ const BuddyList: React.FC = () => {
     console.log('Buddy clicked:', buddy);
     
     // Check if a chat is already open for this buddy
-    const existingChat = openChats.find(chat => chat.buddy.id === buddy.id);
-    if (existingChat) {
+    const existingChatIndex = openChats.findIndex(chat => chat.buddy.id === buddy.id);
+    if (existingChatIndex !== -1) {
+      const existingChat = openChats[existingChatIndex];
       console.log('Chat already open for:', buddy.name);
+      
+      // Use IPC to focus the window
+      const windowTitle = getChatWindowTitle(buddy);
+      (window as any).electronAPI?.focusWindow(windowTitle);
+      
+      // Mark buddy as read
+      setReadBuddies(prev => new Set([...prev, buddy.id]));
       return;
     }
     
     // Open new chat window
     console.log('Opening new chat window for:', buddy.name);
-    setOpenChats([...openChats, { buddy, id: `chat-${buddy.id}-${Date.now()}` }]);
+    const chatId = `chat-${buddy.id}-${Date.now()}`;
+    setOpenChats([...openChats, { buddy, id: chatId, windowRef: null }]);
     
     // Mark buddy as read
     setReadBuddies(prev => new Set([...prev, buddy.id]));
   };
+  
+  const handleWindowCreated = (chatId: string, windowRef: Window) => {
+    setOpenChats(chats => 
+      chats.map(chat => 
+        chat.id === chatId ? { ...chat, windowRef } : chat
+      )
+    );
+  };
 
   const handleChatClose = (chatId: string) => {
     setOpenChats(openChats.filter(chat => chat.id !== chatId));
+  };
+  
+  const getChatWindowTitle = (buddy: User) => {
+    return `Instant Message with ${buddy.screenname || buddy.id || buddy.name}${buddy.name !== (buddy.screenname || buddy.id) ? ` (${buddy.name})` : ''}`;
   };
 
   return (
     <div className="aim-buddy-list">
       {/* Top Image Section */}
       <div className="aim-header">
-        <img src={aimHeader} alt="AOL Instant Messenger" />
+        <img src={aimHeader} alt="Mark Instant Messenger" />
       </div>
 
       {/* Tab Control */}
@@ -124,11 +145,12 @@ const BuddyList: React.FC = () => {
       {openChats.map(({ buddy, id }, index) => (
         <ChildWindow
           key={id}
-          title={`Chat with ${buddy.name}`}
+          title={getChatWindowTitle(buddy)}
           width={600}
           height={400}
           onClose={() => handleChatClose(id)}
           index={index}
+          onWindowCreated={(windowRef) => handleWindowCreated(id, windowRef)}
         >
           <ChatWindow
             buddy={buddy}

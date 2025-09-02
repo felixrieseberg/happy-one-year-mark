@@ -43,4 +43,5 @@ export const USERS: Record<string, User> = {
   'ab': { id: 'ab', name: 'Andrew Badr', screenname: 'peanutbadr' },
   'willc': { id: 'willc', name: 'William Chou' },
   'dianne': { id: 'dianne', name: 'Dianne Penn' },
+  'leon': { id: 'leon', name: 'Leon Wu', screenname: 'BIG TIGER' },
 };

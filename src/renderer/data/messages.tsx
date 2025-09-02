@@ -126,4 +126,7 @@ export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
   ['dianne', [
     { from: USERS['dianne'], message: "Happy one year Mark!" },
   ]],
+  ['leon', [
+    { from: USERS['leon'], message: "hApPy 1 yEaR!!1!" },
+  ]]
 ]);

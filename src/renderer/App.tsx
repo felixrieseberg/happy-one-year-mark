@@ -25,9 +25,6 @@ const App: React.FC = () => {
   // Play welcome sounds when the app starts
   useEffect(() => {
     const playAudioSequence = async () => {
-      // Wait 2 seconds before starting
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
       // Play Welcome.mp3
       const welcome = new Audio(welcomeAudio);
       welcome.play();

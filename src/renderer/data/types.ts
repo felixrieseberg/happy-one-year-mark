@@ -1,10 +1,11 @@
 export interface User {
   id: string;
   name: string;
-  username?: string;
+  screenname?: string;
 }
 
 export interface Message {
   from: User;
   message: string;
+  images?: string[];
 }

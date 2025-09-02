@@ -5,6 +5,12 @@ import ChatWindow from './ChatWindow';
 import { USERS } from './data/users';
 import './BuddyList.css';
 
+// Import images
+import blButtonAway from './images/bl_button_away.png';
+import blButtonGetInfo from './images/bl_button_get_info.png';
+import blButtonGroup from './images/bl_button_group.png';
+import aimHeader from './images/aim_header.png';
+
 const BuddyList: React.FC = () => {
   const [activeTab, setActiveTab] = useState('online');
   const [openChats, setOpenChats] = useState<Array<{ buddy: any; id: string }>>([]);
@@ -12,7 +18,7 @@ const BuddyList: React.FC = () => {
   // Convert users to buddy format
   const buddies = Object.values(USERS).map(user => ({
     id: user.id,
-    name: user.username || user.name,
+    name: user.screenname || user.name,
     screenName: user.id,
     status: undefined
   }));
@@ -37,12 +43,7 @@ const BuddyList: React.FC = () => {
     <div className="aim-buddy-list">
       {/* Top Image Section */}
       <div className="aim-header">
-        <div className="aim-logo">AIM</div>
-        <div className="aim-user-info">
-          <span className="aim-welcome">My AIM</span>
-          <span className="aim-people">People</span>
-          <span className="aim-help">Help</span>
-        </div>
+        <img src={aimHeader} alt="AOL Instant Messenger" />
       </div>
 
       {/* Tab Control */}
@@ -99,9 +100,15 @@ const BuddyList: React.FC = () => {
 
       {/* Icon Row */}
       <div className="aim-icon-row">
-        <button className="aim-icon" title="Chat">💬</button>
-        <button className="aim-icon" title="Get Info">ℹ️</button>
-        <button className="aim-icon" title="Send File">📁</button>
+        <button className="aim-icon" title="Away">
+          <img src={blButtonAway} alt="Away" />
+        </button>
+        <button className="aim-icon" title="Get Info">
+          <img src={blButtonGetInfo} alt="Get Info" />
+        </button>
+        <button className="aim-icon" title="Group">
+          <img src={blButtonGroup} alt="Group" />
+        </button>
       </div>
 
       {/* Bottom Section */}

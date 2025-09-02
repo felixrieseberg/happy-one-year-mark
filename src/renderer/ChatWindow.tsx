@@ -31,7 +31,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
     const buddyMessages = MESSAGES.get(buddy.id as keyof typeof USERS);
     if (buddyMessages) {
       const convertedMessages = buddyMessages.map((msg: Message) => ({
-        from: msg.from.username || msg.from.name,
+        from: msg.from.screenname || msg.from.name,
         text: msg.message,
         timestamp: new Date()
       }));

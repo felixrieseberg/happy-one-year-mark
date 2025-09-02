@@ -1,5 +1,9 @@
 import { User } from "./types";
 
+import maggieAvatar from './avatars/maggie.png';
+import nateParrottAvatar from './avatars/nate_parrott.jpg';
+import graceyunAvatar from './avatars/graceyun.jpg';
+
 export const USERS: Record<string, User> = {
   'felix': { id: 'felix', name: 'Felix' },
   'jerome': { id: 'jerome', name: 'Jerome Swannack' },
@@ -15,7 +19,7 @@ export const USERS: Record<string, User> = {
   'zack lee': { id: 'zack lee', name: 'Zack Lee' },
   'TimW': { id: 'TimW', name: 'Tim Weingarten' },
   'Scott White': { id: 'Scott White', name: 'Scott White' },
-  'nate parrott': { id: 'nate parrott', name: 'Nate Parrott', screenname: 'tmnt360' },
+  'nate parrott': { id: 'nate parrott', name: 'Nate Parrott', screenname: 'tmnt360', avatar: nateParrottAvatar },
   'mo': { id: 'mo', name: 'Mo Julapalli' },
   'santiago': { id: 'santiago', name: 'Santiago Seira', screenname: 'hakuna_matata_to_you' },
   'mark': { id: 'mark', name: 'Mark Pike' },
@@ -32,5 +36,5 @@ export const USERS: Record<string, User> = {
   'ollie': { id: 'ollie', name: 'Ollie Weller-Davies' },
   'darshan': { id: 'darshan', name: 'Darshan Patel' },
   'jwang': { id: 'jwang', name: 'Justin Wang' },
-  'maggie': { id: 'maggie', name: 'Maggie Vo', screenname: 'magrettable' },
+  'maggie': { id: 'maggie', name: 'Maggie Vo', screenname: 'magrettable', avatar: maggieAvatar },
 };

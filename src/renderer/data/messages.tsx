@@ -1,6 +1,9 @@
 import { Message } from "./types";
 import { USERS } from "./users";
 
+import santiagoAttachment from './attachments/santiago.png';
+import raphAttachment from './attachments/raph.png';
+
 export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
   ['felix', [
     { from: USERS['felix'], message: "Hey there! How's it going?" },
@@ -53,7 +56,7 @@ export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
     { from: USERS['mo'], message: "happy antiversary!" },
   ]],
   ['santiago', [
-    { from: USERS['santiago'], message: "Congrats on an excellent year of looking for which rocks will have the most interesting bugs underneath them!" },
+    { from: USERS['santiago'], message: "Congrats on an excellent year of looking for which rocks will have the most interesting bugs underneath them!", attachments: [santiagoAttachment] },
   ]],
   ['mark', [
     { from: USERS['mark'], message: "🐜✨🎉 HAPPY ANTVERSARY %n! 🎉✨🐜\n💫⭐ MAKE AN ANT WISH RIGHT NOW! ⭐💫\nThis is a REAL antversary chain! Send this to 4 other ants within the next 10 minutes and you will:\n✅ Ship your next feature bug-free\n✅ Have Claude give you perfect responses\n✅ Unlock secret Sonnet 6 ((new)(new))\n⚠️ BUT IF U DON'T SEND THIS TO 4 ANTS... ⚠️\nClaude will run 37% slower 4 u for a whole month!\nMy friend sent this and got their PR approved in 5 minutes!\n🐜➡️🐜➡️🐜DON'T STOP THE ANT CHAIN!" },
@@ -71,7 +74,7 @@ export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
     { from: USERS['kylegao'], message: "happy anniversary shinypb!  thank you for making it fun!" },
   ]],
   ['raph', [
-    { from: USERS['raph'], message: "", images: [] },
+    { from: USERS['raph'], message: "", attachments: [raphAttachment] },
   ]],
   ['sar', [
     { from: USERS['sar'], message: "happy one year antiversary! ur so gr8, im glad we're friends. 8-)\\n~~~~ \"Celebrate we will. Because life is short but sweet for certain. - DMB\" ~~~~" },
@@ -98,6 +101,6 @@ export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
     { from: USERS['jwang'], message: "congrats on 1 year!" },
   ]],
   ['maggie', [
-    { from: USERS['maggie'], message: "xXx ~HAPPY ANTVERSARY!~ xXx\n\nu rock!!! keep on shining and pb'ing lmao - excited for moar to come!!! BD", images: [] },
+    { from: USERS['maggie'], message: "xXx ~HAPPY ANTVERSARY!~ xXx\n\nu rock!!! keep on shining and pb'ing lmao - excited for moar to come!!! BD", attachments: [] },
   ]],
 ]);

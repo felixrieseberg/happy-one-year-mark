@@ -79,6 +79,10 @@
   font-weight: normal;
 }
 
+.buddy-item.unread .buddy-name {
+  font-weight: bold;
+}
+
 .buddy-status {
   color: #666;
   font-style: italic;

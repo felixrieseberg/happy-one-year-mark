@@ -95,20 +95,20 @@
   padding: 4px;
   background: linear-gradient(to bottom, #e0e0e0 0%, #c0c0c0 100%);
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.aim-ad-button {
-  background-color: #ff0000;
-  color: white;
-  border: 2px outset #ff0000;
-  padding: 2px 8px;
-  font-weight: bold;
-  font-size: 11px;
+.aim-ad {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
   cursor: pointer;
-}
-
-.aim-ad-button:active {
-  border: 2px inset #ff0000;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 /* Adjust window body padding */

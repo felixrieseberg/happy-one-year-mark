@@ -11,9 +11,10 @@ interface BuddyGroup {
 interface BuddyListTreeProps {
   groups: BuddyGroup[];
   onBuddyDoubleClick?: (buddy: User) => void;
+  unreadBuddyIds?: Set<string>;
 }
 
-const BuddyListTree: React.FC<BuddyListTreeProps> = ({ groups, onBuddyDoubleClick }) => {
+const BuddyListTree: React.FC<BuddyListTreeProps> = ({ groups, onBuddyDoubleClick, unreadBuddyIds = new Set() }) => {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
     new Set(groups.map(g => g.id)) // All groups expanded by default
   );
@@ -53,7 +54,7 @@ const BuddyListTree: React.FC<BuddyListTreeProps> = ({ groups, onBuddyDoubleClic
                 {group.buddies.map((buddy) => (
                   <div
                     key={buddy.id}
-                    className="buddy-item"
+                    className={`buddy-item ${unreadBuddyIds.has(buddy.id) ? 'unread' : ''}`}
                     onClick={() => handleBuddyClick(buddy)}
                   >
                     <span className="buddy-name">{buddy.screenname || buddy.id || buddy.name}</span>

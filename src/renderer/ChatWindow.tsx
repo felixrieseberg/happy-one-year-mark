@@ -3,6 +3,7 @@ import Window98 from './Window98';
 import { MESSAGES } from './data/messages';
 import { Message, User } from './data/types';
 import { USERS } from './data/users';
+import { hasApiKey, storeApiKey, sendMessageToClaude } from './services/anthropicService';
 import './ChatWindow.css';
 
 // Import images
@@ -23,32 +24,113 @@ interface ChatWindowProps {
 const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Array<{ from: string; text: string; timestamp: Date; attachments?: string[] }>>([]);
+  const [isClaudeChat, setIsClaudeChat] = useState(false);
+  const [needsApiKey, setNeedsApiKey] = useState(false);
+  const [apiKeyInput, setApiKeyInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
   // Generate window title
   const windowTitle = `Instant Message with ${buddy.screenname || buddy.id || buddy.name}${buddy.name !== (buddy.screenname || buddy.id) ? ` (${buddy.name})` : ''}`;
 
-  // Load predefined messages when the component mounts
+  // Check if this is Claude and if API key is needed
   useEffect(() => {
-    const buddyMessages = MESSAGES.get(buddy.id as keyof typeof USERS);
-    if (buddyMessages) {
-      const convertedMessages = buddyMessages.map((msg: Message) => ({
-        from: msg.from.screenname || msg.from.name,
-        text: msg.message,
-        timestamp: new Date(),
-        attachments: msg.attachments
-      }));
-      setMessages(convertedMessages);
-    }
+    const checkClaude = async () => {
+      if (buddy.id === 'claude') {
+        setIsClaudeChat(true);
+        const hasKey = await hasApiKey();
+        setNeedsApiKey(!hasKey);
+      } else {
+        setIsClaudeChat(false);
+        setNeedsApiKey(false);
+      }
+    };
+    checkClaude();
   }, [buddy.id]);
 
-  const handleSend = () => {
+  // Load predefined messages when the component mounts
+  useEffect(() => {
+    if (!isClaudeChat) {
+      const buddyMessages = MESSAGES.get(buddy.id as keyof typeof USERS);
+      if (buddyMessages) {
+        const convertedMessages = buddyMessages.map((msg: Message) => ({
+          from: msg.from.screenname || msg.from.name,
+          text: msg.message,
+          timestamp: new Date(),
+          attachments: msg.attachments
+        }));
+        setMessages(convertedMessages);
+      }
+    }
+  }, [buddy.id, isClaudeChat]);
+
+  const handleSend = async () => {
     if (message.trim()) {
-      setMessages([...messages, {
+      const userMessage = {
         from: 'Shinypb',
         text: message,
         timestamp: new Date()
-      }]);
+      };
+      setMessages([...messages, userMessage]);
       setMessage('');
+
+      if (isClaudeChat) {
+        setIsLoading(true);
+        setError(null);
+        console.log('Sending message to Claude:', message);
+        
+        try {
+          // Build conversation history
+          const conversationHistory = messages.map(msg => ({
+            role: msg.from === 'Shinypb' ? 'user' : 'assistant' as const,
+            content: msg.text
+          }));
+          
+          console.log('Calling sendMessageToClaude...');
+          const claudeResponse = await sendMessageToClaude(message, conversationHistory);
+          console.log('Got response from Claude:', claudeResponse);
+          
+          setMessages(prev => {
+            console.log('Adding Claude message to chat');
+            return [...prev, {
+              from: buddy.screenname || buddy.name,
+              text: claudeResponse,
+              timestamp: new Date()
+            }];
+          });
+        } catch (err: any) {
+          console.error('Error in ChatWindow:', err);
+          setError(err.message);
+          
+          // Add error message to chat
+          setMessages(prev => [...prev, {
+            from: buddy.screenname || buddy.name,
+            text: `Error: ${err.message || 'Failed to send message'}`,
+            timestamp: new Date()
+          }]);
+        } finally {
+          console.log('Setting loading to false');
+          setIsLoading(false);
+        }
+      }
+    }
+  };
+
+  const handleApiKeySubmit = async () => {
+    if (apiKeyInput.trim()) {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        await storeApiKey(apiKeyInput);
+        setNeedsApiKey(false);
+        setApiKeyInput('');
+      } catch (err: any) {
+        setError('Failed to store API key');
+        console.error('Error storing API key:', err);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -64,16 +146,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
       title={windowTitle}
       onClose={() => {
         // For child windows, use title-based closing
-        if ((window as any).electronAPI) {
-          (window as any).electronAPI.closeWindowByTitle(windowTitle);
+        if (window.electronAPI) {
+          window.electronAPI.closeWindowByTitle(windowTitle);
         }
         // Also call the passed onClose handler to clean up state
         onClose();
       }}
       onMinimize={() => {
         // For child windows, use title-based minimizing
-        if ((window as any).electronAPI) {
-          (window as any).electronAPI.minimizeWindowByTitle(windowTitle);
+        if (window.electronAPI) {
+          window.electronAPI.minimizeWindowByTitle(windowTitle);
         }
       }}
       showMaximize={false}
@@ -81,15 +163,47 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
       height="100%"
     >
       <div className="chat-window">
-        <div className="chat-messages-container">
-          <div className="avatar-column buddy-avatar">
-            {buddy.avatar ? (
-              <img src={buddy.avatar} alt={buddy.name} className="avatar-image" />
-            ) : (
-              <div className="avatar-placeholder">?</div>
-            )}
+        {needsApiKey ? (
+          // API Key input form
+          <div style={{ padding: '20px', textAlign: 'center' }}>
+            <h3>Enter Anthropic API Key</h3>
+            <p>To chat with Claude, please provide your Anthropic API key.</p>
+            <p style={{ fontSize: '12px', color: '#666' }}>
+              Get your API key from <a href="https://console.anthropic.com/account/keys" target="_blank" rel="noopener noreferrer">console.anthropic.com</a>
+            </p>
+            {error && <p style={{ color: 'red', fontSize: '12px' }}>{error}</p>}
+            <div style={{ marginTop: '20px' }}>
+              <input
+                type="password"
+                value={apiKeyInput}
+                onChange={(e) => setApiKeyInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleApiKeySubmit();
+                  }
+                }}
+                placeholder="sk-ant-..."
+                style={{ width: '300px', marginRight: '10px' }}
+                disabled={isLoading}
+              />
+              <button onClick={handleApiKeySubmit} disabled={isLoading || !apiKeyInput.trim()}>
+                {isLoading ? 'Saving...' : 'Save'}
+              </button>
+            </div>
           </div>
-          <div className="chat-messages sunken-panel">
+        ) : (
+          <>
+            <div className="chat-messages-container">
+              <div className="avatar-column buddy-avatar">
+                {buddy.avatar ? (
+                  <img src={buddy.avatar} alt={buddy.name} className="avatar-image" />
+                ) : (
+                  <div className="avatar-placeholder">
+                    {isClaudeChat ? '🤖' : '?'}
+                  </div>
+                )}
+              </div>
+              <div className="chat-messages sunken-panel">
             {messages.length === 0 ? (
               <div className="chat-empty">Start your conversation with {buddy.screenname || buddy.id || buddy.name}</div>
             ) : (
@@ -104,6 +218,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
                   ))}
                 </div>
               ))
+            )}
+            {isLoading && isClaudeChat && (
+              <div className="chat-message">
+                <span className="chat-from">{buddy.screenname || buddy.name}:</span>
+                <span className="chat-text" style={{ fontStyle: 'italic' }}>typing...</span>
+              </div>
             )}
           </div>
         </div>
@@ -120,6 +240,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
               onKeyDown={handleKeyDown}
               placeholder="Type your message here..."
               rows={3}
+              disabled={isLoading}
             />
           </div>
         </div>
@@ -150,12 +271,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
             className="toolbar-btn send-btn" 
             onClick={handleSend} 
             title="Send"
-            disabled={!message.trim()}
+            disabled={!message.trim() || isLoading}
           >
             <img src={message.trim() ? buttonSendActive : buttonSend} alt="Send" />
           </button>
           </div>
         </fieldset>
+        </>
+        )}
       </div>
     </Window98>
   );

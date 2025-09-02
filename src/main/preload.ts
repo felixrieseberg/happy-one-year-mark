@@ -12,5 +12,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   setWindowTitle: (title: string) => ipcRenderer.send('set-window-title', title),
   minimizeWindowByTitle: (title: string) => ipcRenderer.send('minimize-window-by-title', title),
   closeWindowByTitle: (title: string) => ipcRenderer.send('close-window-by-title', title),
-  getWindowTitle: () => window.document.title
+  getWindowTitle: () => window.document.title,
+  // API key management
+  storeApiKey: (apiKey: string) => ipcRenderer.invoke('store-api-key', apiKey),
+  getApiKey: () => ipcRenderer.invoke('get-api-key'),
+  clearApiKey: () => ipcRenderer.invoke('clear-api-key'),
+  sendClaudeMessage: (message: string, conversationHistory: any[]) => ipcRenderer.invoke('send-claude-message', message, conversationHistory)
 });

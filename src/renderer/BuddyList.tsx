@@ -18,7 +18,10 @@ const BuddyList: React.FC = () => {
   const [activeTab, setActiveTab] = useState('online');
   const [openChats, setOpenChats] = useState<Array<{ buddy: User; id: string; windowRef: Window | null }>>([]);
   const [readBuddies, setReadBuddies] = useState<Set<string>>(new Set());
-  const buddies = Object.values(USERS);
+  const allUsers = Object.values(USERS);
+  // Separate Claude for Family group
+  const claude = allUsers.find(user => user.id === 'claude');
+  const buddies = allUsers.filter(user => user.id !== 'claude');
   
   // Get buddies who have messages (unread)
   const unreadBuddies = buddies.filter(buddy => 
@@ -36,7 +39,7 @@ const BuddyList: React.FC = () => {
       
       // Use IPC to focus the window
       const windowTitle = getChatWindowTitle(buddy);
-      (window as any).electronAPI?.focusWindow(windowTitle);
+      window.electronAPI?.focusWindow(windowTitle);
       
       // Mark buddy as read
       setReadBuddies(prev => new Set([...prev, buddy.id]));
@@ -98,7 +101,7 @@ const BuddyList: React.FC = () => {
                   {
                     id: 'family',
                     name: 'Family',
-                    buddies: []
+                    buddies: claude ? [claude] : []
                   },
                   {
                     id: 'buddies',

@@ -21,6 +21,7 @@ const createWindow = (): void => {
     frame: false,
     transparent: true,
     roundedCorners: false,
+    acceptFirstMouse: true,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
@@ -65,6 +66,7 @@ const createWindow = (): void => {
         roundedCorners: false,
         minHeight: 300,
         minWidth: 300,
+        acceptFirstMouse: true,
         webPreferences: {
           preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
           contextIsolation: true,

@@ -10,7 +10,7 @@ interface ElectronAPI {
   storeApiKey: (apiKey: string) => Promise<void>;
   getApiKey: () => Promise<string | null>;
   clearApiKey: () => Promise<boolean>;
-  sendClaudeMessage: (message: string, conversationHistory: any[]) => Promise<string>;
+  sendClaudeMessage: (message: string, conversationHistory: Array<{role: string; content: string}>) => Promise<string>;
 }
 
 declare global {

@@ -37,7 +37,8 @@ const App: React.FC = () => {
       im2.play();
     };
     
-    playAudioSequence().catch(err => {
+    playAudioSequence().catch(() => {
+      // Audio playback failed, likely due to autoplay restrictions
     });
   }, []);
 

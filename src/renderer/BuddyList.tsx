@@ -33,8 +33,6 @@ const BuddyList: React.FC = () => {
     // Check if a chat is already open for this buddy
     const existingChatIndex = openChats.findIndex(chat => chat.buddy.id === buddy.id);
     if (existingChatIndex !== -1) {
-      const existingChat = openChats[existingChatIndex];
-      
       const windowTitle = getChatWindowTitle(buddy);
       window.electronAPI?.focusWindow(windowTitle);
       

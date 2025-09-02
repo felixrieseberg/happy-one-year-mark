@@ -88,12 +88,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
             text: claudeResponse,
             timestamp: new Date()
           }]);
-        } catch (err: any) {
-          setError(err.message);
+        } catch (err) {
+          const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+          setError(errorMessage);
           
           setMessages(prev => [...prev, {
             from: buddy.screenname || buddy.name,
-            text: `Error: ${err.message || 'Failed to send message'}`,
+            text: `Error: ${err instanceof Error ? err.message : 'Failed to send message'}`,
             timestamp: new Date()
           }]);
         } finally {
@@ -112,7 +113,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
         await storeApiKey(apiKeyInput);
         setNeedsApiKey(false);
         setApiKeyInput('');
-      } catch (err: any) {
+      } catch (err) {
         setError('Failed to store API key');
       } finally {
         setIsLoading(false);

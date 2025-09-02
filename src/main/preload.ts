@@ -12,5 +12,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   storeApiKey: (apiKey: string) => ipcRenderer.invoke('store-api-key', apiKey),
   getApiKey: () => ipcRenderer.invoke('get-api-key'),
   clearApiKey: () => ipcRenderer.invoke('clear-api-key'),
-  sendClaudeMessage: (message: string, conversationHistory: any[]) => ipcRenderer.invoke('send-claude-message', message, conversationHistory)
+  sendClaudeMessage: (message: string, conversationHistory: Array<{role: string; content: string}>) => ipcRenderer.invoke('send-claude-message', message, conversationHistory)
 });

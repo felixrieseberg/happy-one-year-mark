@@ -36,7 +36,7 @@ const FLAGS = {
   APPLE_ID_PASSWORD: process.env.APPLE_ID_PASSWORD,
 };
 
-const windowsSign: any = {
+const windowsSign: Record<string, unknown> = {
   signToolPath: FLAGS.SIGNTOOL_PATH,
   signWithParams: `/v /dlib ${FLAGS.AZURE_CODE_SIGNING_DLIB} /dmdf ${FLAGS.AZURE_METADATA_JSON_PATH}`,
   timestampServer: "http://timestamp.acs.microsoft.com",

@@ -73,6 +73,7 @@ const ChildWindow: React.FC<ChildWindowProps> = ({
             linkElem.href = sheet.href;
             externalDoc.head.appendChild(linkElem);
           } else if (sheet.cssRules) {
+            // For internal stylesheets
             const style = externalDoc.createElement('style');
             let cssText = '';
             Array.from(sheet.cssRules).forEach((rule) => {
@@ -82,6 +83,7 @@ const ChildWindow: React.FC<ChildWindowProps> = ({
             externalDoc.head.appendChild(style);
           }
         } catch (e) {
+          // Some stylesheets cannot be accessed due to CORS
         }
       }
 
@@ -99,8 +101,9 @@ const ChildWindow: React.FC<ChildWindowProps> = ({
       externalDoc.body.appendChild(containerDiv);
       setContainer(containerDiv);
       
-      if ((newWindow as any).electronAPI?.setWindowTitle) {
-        (newWindow as any).electronAPI.setWindowTitle(title);
+      const electronWindow = newWindow as Window & { electronAPI?: { setWindowTitle: (title: string) => void } };
+      if (electronWindow.electronAPI?.setWindowTitle) {
+        electronWindow.electronAPI.setWindowTitle(title);
       }
     };
 

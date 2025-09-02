@@ -91,6 +91,8 @@ const createWindow = (): void => {
       } else {
         window.maximize();
       }
+    } else {
+      // Window not found
     }
   });
 
@@ -120,7 +122,6 @@ const createWindow = (): void => {
     const targetWindow = chatWindows.get(title);
     if (targetWindow && !targetWindow.isDestroyed()) {
       targetWindow.minimize();
-    } else {
     }
   });
   
@@ -175,7 +176,7 @@ const createWindow = (): void => {
     }
   });
   
-  ipcMain.handle('send-claude-message', async (event, message: string, conversationHistory: any[]) => {
+  ipcMain.handle('send-claude-message', async (event, message: string, conversationHistory: Array<{role: string; content: string}>) => {
     try {
       const userDataPath = app.getPath('userData');
       const keyPath = path.join(userDataPath, 'anthropic-key');
@@ -202,8 +203,8 @@ const createWindow = (): void => {
         max_tokens: 1024,
         messages: [
           ...conversationHistory,
-          { role: 'user', content: message }
-        ],
+          { role: 'user' as const, content: message }
+        ] as Array<{role: 'user' | 'assistant'; content: string}>,
         system: "You are Claude, chatting in an AOL Instant Messenger style chat. Keep your responses conversational, friendly, and relatively brief (a few sentences at most). Use casual internet chat style when appropriate."
       });
       

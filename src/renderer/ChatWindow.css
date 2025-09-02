@@ -84,6 +84,18 @@
   color: #000000;
 }
 
+.chat-attachment {
+  margin-top: 4px;
+  margin-left: 20px;
+}
+
+.chat-attachment-image {
+  max-width: 300px;
+  max-height: 300px;
+  border: 1px solid #ccc;
+  display: block;
+}
+
 .chat-input-area {
   flex: 1;
   display: flex;

@@ -20,7 +20,7 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<Array<{ from: string; text: string; timestamp: Date }>>([]);
+  const [messages, setMessages] = useState<Array<{ from: string; text: string; timestamp: Date; attachments?: string[] }>>([]);
 
   // Load predefined messages when the component mounts
   useEffect(() => {
@@ -29,7 +29,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
       const convertedMessages = buddyMessages.map((msg: Message) => ({
         from: msg.from.screenname || msg.from.name,
         text: msg.message,
-        timestamp: new Date()
+        timestamp: new Date(),
+        attachments: msg.attachments
       }));
       setMessages(convertedMessages);
     }
@@ -79,6 +80,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ buddy, onClose }) => {
                 <div key={index} className="chat-message">
                   <span className="chat-from">{msg.from}:</span>
                   <span className="chat-text">{msg.text}</span>
+                  {msg.attachments && msg.attachments.map((attachment, i) => (
+                    <div key={i} className="chat-attachment">
+                      <img src={attachment} alt="Attachment" className="chat-attachment-image" />
+                    </div>
+                  ))}
                 </div>
               ))
             )}

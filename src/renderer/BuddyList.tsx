@@ -186,6 +186,26 @@ const BuddyList: React.FC = () => {
         />
       </div>
 
+      {/* News Ticker */}
+      <div className="news-ticker">
+        <div className="news-ticker-content">
+          🎮 Nintendo Wii causes nationwide TV damage epidemic from thrown controllers • 
+          💿 Blockbuster CEO confident Netflix is "just a fad" • 
+          🎵 iTunes Store reaches 3 billion downloads, your computer has 47 toolbars • 
+          📱 BlackBerry declared "peak of mobile technology" by tech experts • 
+          🎬 Spider-Man 3 breaks box office records, emo Peter Parker dance scene confuses millions • 
+          💻 Windows Vista finally makes computers secure, users report • 
+          📺 Lost writers confirm they "definitely have a plan" for the show's mysteries • 
+          🎮 Everyone's grandma now owns a Wii for bowling • 
+          📱 T9 texting speed champion types "Hello" in under 3 seconds • 
+          🌐 Facebook opens to everyone, your parents request to be your friend • 
+          💾 1GB USB drives now "massive" at only $40 • 
+          🎵 Soulja Boy teaches entire internet how to "Crank That" • 
+          📱 Motorola RAZR still coolest phone despite being 3 years old • 
+          🎮 Portal's cake confirmed to be a lie by anonymous sources • 
+        </div>
+      </div>
+
       {/* Render chat windows */}
       {openChats.map(({ buddy, id }, index) => (
         <ChildWindow

@@ -139,4 +139,7 @@ export const MESSAGES: Map<keyof typeof USERS, Message[]> = new Map([
   ['ivy', [
     { from: USERS['ivy'], message: "hApPy OnE yEaR working with u has been so fun haha lol XD XD XD", attachments: [ivyAttachment] },
   ]],
+  ['martin', [
+    { from: USERS['martin'], message: "[AUTO-REPLY] martin is away: celebrating shinypb's 1yr!! \u0002\u0002BRB\u0002\u0002 (but seriously congrats, you make this place way more fun)" },
+  ]],
 ]);

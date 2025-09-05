@@ -48,5 +48,6 @@ export const USERS: Record<string, User> = {
   'ibu': { id: 'ibu', name: 'Ibu Madha', screenname: 'SSJ Rampager' },
   'hoi': { id: 'hoi', name: 'Hoi Fung Ho', screenname: 'hoipolloi' },
   'ivy': { id: 'ivy', name: 'Tina Vachovsky', screenname: 'tuna95' },
+  'martin': { id: 'martin', name: 'Martin Amps', screenname: 'mamps' },
   'claude': { id: 'claude', name: 'Claude', screenname: 'Claude', avatar: claudeAvatar }
 };
